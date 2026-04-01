@@ -9,6 +9,10 @@ SRC_URI = "\
     file://boot.cmd.in \
     file://uEnv.txt.in \
 "
+SRC_URI:append:common-torizon-distro = "file://common-boot.cmd.in"
+
+BOOT_CMD_IN = "${WORKDIR}/boot.cmd.in"
+BOOT_CMD_IN:common-torizon-distro = "${WORKDIR}/common-boot.cmd.in"
 
 APPEND ?= ""
 
@@ -231,7 +235,7 @@ do_compile() {
         -e 's/@@KERNEL_DTB_PREFIX@@/${DTB_PREFIX}/' \
         -e 's/@@APPEND@@/${APPEND}/' \
         -e 's/@@FITCONF_FDT_OVERLAYS@@/${FITCONF_FDT_OVERLAYS}/' \
-        "${WORKDIR}/boot.cmd.in" > boot.cmd
+        "${BOOT_CMD_IN}" > boot.cmd
 
     bbdebug 1 "Building uEnv.txt..."
     sed -e 's#@@UENV_EXTRA_CONFIGS@@#${UENV_EXTRA_CONFIGS}#' \
